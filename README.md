@@ -1,0 +1,5 @@
+- [ ] Criar o diagrama de classes (https://lucid.app/)
+- [ ] Criar os 3 métodos de randomização
+- [ ] Layout permitindo adicionar os parâmetros e gerar numeros na tela (ver melhor maneira de apresentar)
+- [ ] Opção de simular e gerar PDF
+- [ ] (BÔNUS) histórico de arquivos de simulações

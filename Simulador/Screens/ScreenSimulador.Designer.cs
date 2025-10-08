@@ -1,6 +1,6 @@
-﻿namespace Simulador
+﻿namespace Simulador.Screens
 {
-    partial class Form1
+    partial class ScreenSimulador
     {
         /// <summary>
         /// Required designer variable.
@@ -28,13 +28,22 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
+            this.SuspendLayout();
+            // 
+            // ScreenSimulador
+            // 
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
-            this.Text = "Form1";
+            this.BackColor = System.Drawing.Color.Silver;
+            this.ClientSize = new System.Drawing.Size(884, 461);
+            this.MaximizeBox = false;
+            this.Name = "ScreenSimulador";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+            this.Text = "Simulador";
+            this.ResumeLayout(false);
+
         }
 
         #endregion
     }
 }
-

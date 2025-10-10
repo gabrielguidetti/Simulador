@@ -1,24 +1,43 @@
-﻿namespace Simulador.Models
+﻿using Simulador.Models.Interfaces;
+using System.Collections.Generic;
+
+namespace Simulador.Models
 {
-    public class LCG
+    public class LCG : IRNGenerator
     {
         private long _seed;
-        private readonly long _multiplier;
-        private readonly long _increment;
-        private readonly long _modulus;
+        private long _multiplier;
+        private long _increment;
+        private long _modulus;
 
-        public LCG(long seed, long multiplier, long increment, long modulus)
+        public LCG()
         {
-            _seed = seed;
-            _multiplier = multiplier;
-            _increment = increment;
-            _modulus = modulus;
         }
 
-        public long Next()
+        private long Next()
         {
             _seed = (_multiplier * _seed + _increment) % _modulus;
             return _seed;
+        }
+
+        public List<long> Generate(RandomConfig config)
+        {
+            _seed = config.SementeInicial;
+            _multiplier = config.Multiplicador;
+            _increment = config.Incremento;
+            _modulus = config.Modulo;
+
+            List<long> result = new List<long>();
+            long actual = 0;
+            long range = config.Maximo - config.Minimo + 1;
+
+            for (int i = 0; i < config.Quantidade; i++)
+            {
+                actual = Next();
+                result.Add((actual % range) + config.Minimo);
+            }
+            
+            return result;
         }
     }
 }

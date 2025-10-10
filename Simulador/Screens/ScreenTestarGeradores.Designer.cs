@@ -32,13 +32,15 @@
             this.LblSelecioneGerador = new System.Windows.Forms.Label();
             this.BtnResetar = new System.Windows.Forms.Button();
             this.GBParametros = new System.Windows.Forms.GroupBox();
+            this.BtnQuestionModulo = new System.Windows.Forms.Button();
+            this.NumModulo = new System.Windows.Forms.NumericUpDown();
+            this.lblModulo = new System.Windows.Forms.Label();
             this.BtnQuestionNumero = new System.Windows.Forms.Button();
             this.BtnQuestionIncremento = new System.Windows.Forms.Button();
             this.BtnQuestionMultiplicador = new System.Windows.Forms.Button();
             this.BtnQuestionSemente = new System.Windows.Forms.Button();
             this.BtnQuestionMaximo = new System.Windows.Forms.Button();
             this.BtnQuestionMinimo = new System.Windows.Forms.Button();
-            this.BtnGerar = new System.Windows.Forms.Button();
             this.NumQtd = new System.Windows.Forms.NumericUpDown();
             this.LblQtd = new System.Windows.Forms.Label();
             this.NumIncremento = new System.Windows.Forms.NumericUpDown();
@@ -51,9 +53,11 @@
             this.NumMinimo = new System.Windows.Forms.NumericUpDown();
             this.LblMaximo = new System.Windows.Forms.Label();
             this.LblMinimo = new System.Windows.Forms.Label();
+            this.BtnGerar = new System.Windows.Forms.Button();
             this.TxtBoxResultado = new System.Windows.Forms.TextBox();
             this.LblResultado = new System.Windows.Forms.Label();
             this.GBParametros.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.NumModulo)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.NumQtd)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.NumIncremento)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.NumSemente)).BeginInit();
@@ -102,13 +106,15 @@
             // GBParametros
             // 
             this.GBParametros.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.GBParametros.Controls.Add(this.BtnQuestionModulo);
+            this.GBParametros.Controls.Add(this.NumModulo);
+            this.GBParametros.Controls.Add(this.lblModulo);
             this.GBParametros.Controls.Add(this.BtnQuestionNumero);
             this.GBParametros.Controls.Add(this.BtnQuestionIncremento);
             this.GBParametros.Controls.Add(this.BtnQuestionMultiplicador);
             this.GBParametros.Controls.Add(this.BtnQuestionSemente);
             this.GBParametros.Controls.Add(this.BtnQuestionMaximo);
             this.GBParametros.Controls.Add(this.BtnQuestionMinimo);
-            this.GBParametros.Controls.Add(this.BtnGerar);
             this.GBParametros.Controls.Add(this.NumQtd);
             this.GBParametros.Controls.Add(this.LblQtd);
             this.GBParametros.Controls.Add(this.NumIncremento);
@@ -128,11 +134,57 @@
             this.GBParametros.TabStop = false;
             this.GBParametros.Text = "Parâmetros";
             // 
+            // BtnQuestionModulo
+            // 
+            this.BtnQuestionModulo.BackColor = System.Drawing.Color.White;
+            this.BtnQuestionModulo.Font = new System.Drawing.Font("Arial", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.BtnQuestionModulo.Location = new System.Drawing.Point(677, 23);
+            this.BtnQuestionModulo.Name = "BtnQuestionModulo";
+            this.BtnQuestionModulo.Size = new System.Drawing.Size(25, 25);
+            this.BtnQuestionModulo.TabIndex = 23;
+            this.BtnQuestionModulo.Text = "?";
+            this.BtnQuestionModulo.UseVisualStyleBackColor = false;
+            this.BtnQuestionModulo.Click += new System.EventHandler(this.BtnQuestionModulo_Click);
+            // 
+            // NumModulo
+            // 
+            this.NumModulo.Location = new System.Drawing.Point(620, 51);
+            this.NumModulo.Maximum = new decimal(new int[] {
+            1410065407,
+            2,
+            0,
+            0});
+            this.NumModulo.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.NumModulo.Name = "NumModulo";
+            this.NumModulo.Size = new System.Drawing.Size(90, 20);
+            this.NumModulo.TabIndex = 22;
+            this.NumModulo.Value = new decimal(new int[] {
+            0,
+            1,
+            0,
+            0});
+            // 
+            // lblModulo
+            // 
+            this.lblModulo.AutoSize = true;
+            this.lblModulo.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.lblModulo.Font = new System.Drawing.Font("Arial", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblModulo.ForeColor = System.Drawing.Color.Black;
+            this.lblModulo.Location = new System.Drawing.Point(617, 30);
+            this.lblModulo.Name = "lblModulo";
+            this.lblModulo.Size = new System.Drawing.Size(59, 18);
+            this.lblModulo.TabIndex = 21;
+            this.lblModulo.Text = "Módulo";
+            // 
             // BtnQuestionNumero
             // 
             this.BtnQuestionNumero.BackColor = System.Drawing.Color.White;
             this.BtnQuestionNumero.Font = new System.Drawing.Font("Arial", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.BtnQuestionNumero.Location = new System.Drawing.Point(726, 23);
+            this.BtnQuestionNumero.Location = new System.Drawing.Point(820, 23);
             this.BtnQuestionNumero.Name = "BtnQuestionNumero";
             this.BtnQuestionNumero.Size = new System.Drawing.Size(25, 25);
             this.BtnQuestionNumero.TabIndex = 20;
@@ -200,21 +252,9 @@
             this.BtnQuestionMinimo.UseVisualStyleBackColor = false;
             this.BtnQuestionMinimo.Click += new System.EventHandler(this.BtnQuestionMinimo_Click);
             // 
-            // BtnGerar
-            // 
-            this.BtnGerar.BackColor = System.Drawing.Color.White;
-            this.BtnGerar.Font = new System.Drawing.Font("Arial", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.BtnGerar.Location = new System.Drawing.Point(757, 30);
-            this.BtnGerar.Name = "BtnGerar";
-            this.BtnGerar.Size = new System.Drawing.Size(93, 41);
-            this.BtnGerar.TabIndex = 14;
-            this.BtnGerar.Text = "Gerar";
-            this.BtnGerar.UseVisualStyleBackColor = false;
-            this.BtnGerar.Click += new System.EventHandler(this.BtnGerar_Click);
-            // 
             // NumQtd
             // 
-            this.NumQtd.Location = new System.Drawing.Point(626, 51);
+            this.NumQtd.Location = new System.Drawing.Point(720, 51);
             this.NumQtd.Maximum = new decimal(new int[] {
             999,
             0,
@@ -240,7 +280,7 @@
             this.LblQtd.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
             this.LblQtd.Font = new System.Drawing.Font("Arial", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.LblQtd.ForeColor = System.Drawing.Color.Black;
-            this.LblQtd.Location = new System.Drawing.Point(623, 30);
+            this.LblQtd.Location = new System.Drawing.Point(717, 30);
             this.LblQtd.Name = "LblQtd";
             this.LblQtd.Size = new System.Drawing.Size(104, 18);
             this.LblQtd.TabIndex = 12;
@@ -250,8 +290,8 @@
             // 
             this.NumIncremento.Location = new System.Drawing.Point(508, 51);
             this.NumIncremento.Maximum = new decimal(new int[] {
-            99999999,
-            0,
+            1215752191,
+            23,
             0,
             0});
             this.NumIncremento.Minimum = new decimal(new int[] {
@@ -263,7 +303,7 @@
             this.NumIncremento.Size = new System.Drawing.Size(90, 20);
             this.NumIncremento.TabIndex = 11;
             this.NumIncremento.Value = new decimal(new int[] {
-            1,
+            1013904223,
             0,
             0,
             0});
@@ -284,8 +324,8 @@
             // 
             this.NumSemente.Location = new System.Drawing.Point(222, 51);
             this.NumSemente.Maximum = new decimal(new int[] {
-            99999999,
-            0,
+            1215752191,
+            23,
             0,
             0});
             this.NumSemente.Minimum = new decimal(new int[] {
@@ -297,7 +337,7 @@
             this.NumSemente.Size = new System.Drawing.Size(90, 20);
             this.NumSemente.TabIndex = 9;
             this.NumSemente.Value = new decimal(new int[] {
-            1,
+            -1831433054,
             0,
             0,
             0});
@@ -318,8 +358,8 @@
             // 
             this.NumMultiplicador.Location = new System.Drawing.Point(373, 51);
             this.NumMultiplicador.Maximum = new decimal(new int[] {
-            99999999,
-            0,
+            1215752191,
+            23,
             0,
             0});
             this.NumMultiplicador.Minimum = new decimal(new int[] {
@@ -331,7 +371,7 @@
             this.NumMultiplicador.Size = new System.Drawing.Size(90, 20);
             this.NumMultiplicador.TabIndex = 7;
             this.NumMultiplicador.Value = new decimal(new int[] {
-            1,
+            1664525,
             0,
             0,
             0});
@@ -406,13 +446,27 @@
             this.LblMinimo.TabIndex = 0;
             this.LblMinimo.Text = "Mínimo";
             // 
+            // BtnGerar
+            // 
+            this.BtnGerar.BackColor = System.Drawing.Color.White;
+            this.BtnGerar.Font = new System.Drawing.Font("Arial", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.BtnGerar.Location = new System.Drawing.Point(775, 144);
+            this.BtnGerar.Name = "BtnGerar";
+            this.BtnGerar.Size = new System.Drawing.Size(93, 30);
+            this.BtnGerar.TabIndex = 14;
+            this.BtnGerar.Text = "Gerar";
+            this.BtnGerar.UseVisualStyleBackColor = false;
+            this.BtnGerar.Click += new System.EventHandler(this.BtnGerar_Click);
+            // 
             // TxtBoxResultado
             // 
             this.TxtBoxResultado.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.TxtBoxResultado.Font = new System.Drawing.Font("Arial", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.TxtBoxResultado.Location = new System.Drawing.Point(12, 177);
             this.TxtBoxResultado.Multiline = true;
             this.TxtBoxResultado.Name = "TxtBoxResultado";
             this.TxtBoxResultado.ReadOnly = true;
+            this.TxtBoxResultado.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.TxtBoxResultado.Size = new System.Drawing.Size(856, 262);
             this.TxtBoxResultado.TabIndex = 4;
             // 
@@ -439,6 +493,7 @@
             this.Controls.Add(this.BtnResetar);
             this.Controls.Add(this.LblSelecioneGerador);
             this.Controls.Add(this.CBGerador);
+            this.Controls.Add(this.BtnGerar);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.MaximizeBox = false;
             this.Name = "ScreenTestarGeradores";
@@ -446,6 +501,7 @@
             this.Text = "Testar Geradores";
             this.GBParametros.ResumeLayout(false);
             this.GBParametros.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.NumModulo)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.NumQtd)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.NumIncremento)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.NumSemente)).EndInit();
@@ -484,5 +540,8 @@
         private System.Windows.Forms.Button BtnQuestionMultiplicador;
         private System.Windows.Forms.Button BtnQuestionIncremento;
         private System.Windows.Forms.Button BtnQuestionNumero;
+        private System.Windows.Forms.Button BtnQuestionModulo;
+        private System.Windows.Forms.NumericUpDown NumModulo;
+        private System.Windows.Forms.Label lblModulo;
     }
 }

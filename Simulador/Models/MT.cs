@@ -1,8 +1,10 @@
-﻿using System;
+﻿using Simulador.Models.Interfaces;
+using System;
+using System.Collections.Generic;
 
 namespace Simulador.Models
 {
-    public class MT
+    public class MT : IRNGenerator
     {
         #region constants
         /// <summary>
@@ -69,10 +71,8 @@ namespace Simulador.Models
             }
         }
 
-        private MT()
+        public MT()
         {
-            //init
-            this.sgenrand(4327);
         }
         #endregion
 
@@ -204,6 +204,18 @@ namespace Simulador.Models
                 return double.NaN;
             }
             return (this.Generate() * (higherBound - lowerBound + 1)) + lowerBound;
+        }
+
+        public List<long> Generate(RandomConfig config)
+        {
+            sgenrand((ulong)config.SementeInicial);
+
+            List<long> result = new List<long>();
+
+            for (int i = 0; i < config.Quantidade; i++)
+                result.Add((long)Generate(config.Minimo, config.Maximo));
+
+            return result;
         }
         #endregion
     }

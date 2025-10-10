@@ -11,5 +11,6 @@ namespace Simulador.Models
         public long Multiplicador { get; set; }
         public long Incremento { get; set; }
         public long Quantidade { get; set; }
+        public long Modulo { get; set; }
     }
 }

@@ -48,6 +48,7 @@
   <ItemGroup>
     <Compile Include="Models\Enums\EGeradores.cs" />
     <Compile Include="Models\RandomConfig.cs" />
+    <Compile Include="Models\RNG.cs" />
     <Compile Include="Screens\ScreenSimulador.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -71,6 +72,7 @@
     <Compile Include="Screens\ScreenTestarGeradores.Designer.cs">
       <DependentUpon>ScreenTestarGeradores.cs</DependentUpon>
     </Compile>
+    <Compile Include="Services\RandomNumberService.cs" />
     <Compile Include="Util\MessageHelper.cs" />
     <EmbeddedResource Include="Screens\ScreenSimulador.resx">
       <DependentUpon>ScreenSimulador.cs</DependentUpon>

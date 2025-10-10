@@ -1,7 +1,9 @@
 ﻿using Simulador.Models;
 using Simulador.Models.Enums;
+using Simulador.Models.Interfaces;
 using Simulador.Util;
 using System;
+using System.Collections.Generic;
 using System.Windows.Forms;
 
 namespace Simulador
@@ -44,6 +46,11 @@ namespace Simulador
             MessageHelper.InfoMessageBox("Informe a quantidade de números que serão gerados", "Quantidade de números");
         }
 
+        private void BtnQuestionModulo_Click(object sender, EventArgs e)
+        {
+            MessageHelper.InfoMessageBox("Informe o módulo que será utilizado", "Módulo");
+        }
+
         private void BtnGerar_Click(object sender, EventArgs e)
         {
             var config = GerarConfig();
@@ -51,11 +58,40 @@ namespace Simulador
             if (!ValidarGeracao(config))
                 return;
 
-            
+            IRNGenerator generator = null;
+
+            if(config.Gerador == EGeradores.LINEAR_CONGRUENTIAL_GENERATOR)
+            {
+                generator = new LCG();
+            }
+            else if(config.Gerador == EGeradores.MERSENNE_TWISTER)
+            {
+                generator = new MT();
+            }
+            else if (config.Gerador == EGeradores.RANDOM_NUMBER_GENERATOR)
+            {
+                generator = new RNG();
+            }
+
+            List<long> result = generator.Generate(config);
+
+            TxtBoxResultado.Text = string.Join(", ", result);
         }
 
         private bool ValidarGeracao(RandomConfig config)
         {
+            if(config.Quantidade < 1)
+            {
+                MessageHelper.ErrorMessageBox("Escolha uma quantidade maior que 0", "ERRO");
+                return false;
+            }
+
+            if (config.Modulo < 1)
+            {
+                MessageHelper.ErrorMessageBox("Escolha um valor de módulo maior que 0", "ERRO");
+                return false;
+            }
+
             if (config.Gerador == EGeradores.NONE)
             {
                 MessageHelper.ErrorMessageBox("Escolha um gerador", "ERRO");
@@ -84,17 +120,23 @@ namespace Simulador
             LblIncremento.Visible = mostrar;
             NumIncremento.Visible = mostrar;
             BtnQuestionIncremento.Visible = mostrar;
+
+            lblModulo.Visible = mostrar;
+            NumModulo.Visible = mostrar;
+            BtnQuestionModulo.Visible = mostrar;
         }
 
         private void ResetarCampos()
         {
             NumMinimo.Value = 0;
             NumMaximo.Value = 10;
-            NumSemente.Value = 1;
-            NumMultiplicador.Value = 1;
-            NumIncremento.Value = 1;
+            NumSemente.Value = 2463534242;
+            NumMultiplicador.Value = 1664525;
+            NumIncremento.Value = 1013904223;
             NumQtd.Value = 1;
+            NumModulo.Value = 4294967296;
             CBGerador.SelectedIndex = -1;
+            TxtBoxResultado.Text = "";
             MostrarCampos(false);
         }
 
@@ -105,10 +147,15 @@ namespace Simulador
             if(geradorEscolhido == 0)
             {
                 MostrarCampos(true);
+                NumSemente.Value = 2463534242;
             } 
             else if (geradorEscolhido == 1)
             {
                 MostrarCampos(false);
+                LblSementeInicial.Visible = true;
+                NumSemente.Visible = true;
+                BtnQuestionSemente.Visible = true;
+                NumSemente.Value = 4237;
             } 
             else if (geradorEscolhido == 2)
             {
@@ -132,7 +179,8 @@ namespace Simulador
                 SementeInicial = (long)NumSemente.Value,
                 Multiplicador = (long) NumMultiplicador.Value,
                 Incremento = (long)NumIncremento.Value,
-                Quantidade = (long)NumQtd.Value
+                Quantidade = (long)NumQtd.Value,
+                Modulo = (long)NumModulo.Value
             };
         }
     }

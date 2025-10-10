@@ -1,5 +1,6 @@
 ﻿using Simulador.Models.Interfaces;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace Simulador.Models
 {
@@ -30,9 +31,14 @@ namespace Simulador.Models
             List<long> result = new List<long>();
             long actual = 0;
             long range = config.Maximo - config.Minimo + 1;
+            Process currentProcess = Process.GetCurrentProcess();
 
             for (int i = 0; i < config.Quantidade; i++)
             {
+                if(config.MaxBytes != 0 && i % 1000 == 0)
+                    if(currentProcess.PrivateMemorySize64 > config.MaxBytes)
+                        config.MaxBytes = currentProcess.PrivateMemorySize64;
+
                 actual = Next();
                 result.Add((actual % range) + config.Minimo);
             }

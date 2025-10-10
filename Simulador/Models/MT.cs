@@ -1,6 +1,7 @@
 ﻿using Simulador.Models.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace Simulador.Models
 {
@@ -211,9 +212,16 @@ namespace Simulador.Models
             sgenrand((ulong)config.SementeInicial);
 
             List<long> result = new List<long>();
+            Process currentProcess = Process.GetCurrentProcess();
 
             for (int i = 0; i < config.Quantidade; i++)
+            {
+                if (config.MaxBytes != 0 && i % 1000 == 0)
+                    if (currentProcess.PrivateMemorySize64 > config.MaxBytes)
+                        config.MaxBytes = currentProcess.PrivateMemorySize64;
+
                 result.Add((long)Generate(config.Minimo, config.Maximo));
+            }
 
             return result;
         }

@@ -12,5 +12,7 @@ namespace Simulador.Models
         public long Incremento { get; set; }
         public long Quantidade { get; set; }
         public long Modulo { get; set; }
+        public string FolderPath { get; set; }
+        public long MaxBytes { get; set; }
     }
 }

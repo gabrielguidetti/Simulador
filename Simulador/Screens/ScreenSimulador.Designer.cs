@@ -32,6 +32,9 @@
             this.LblSelecioneGerador = new System.Windows.Forms.Label();
             this.BtnResetar = new System.Windows.Forms.Button();
             this.GBParametros = new System.Windows.Forms.GroupBox();
+            this.BtnFolder = new System.Windows.Forms.Button();
+            this.label1 = new System.Windows.Forms.Label();
+            this.TxtBoxFolder = new System.Windows.Forms.TextBox();
             this.BtnQuestionModulo = new System.Windows.Forms.Button();
             this.NumModulo = new System.Windows.Forms.NumericUpDown();
             this.lblModulo = new System.Windows.Forms.Label();
@@ -55,9 +58,6 @@
             this.LblMinimo = new System.Windows.Forms.Label();
             this.BtnGerar = new System.Windows.Forms.Button();
             this.FBD = new System.Windows.Forms.FolderBrowserDialog();
-            this.TxtBoxFolder = new System.Windows.Forms.TextBox();
-            this.label1 = new System.Windows.Forms.Label();
-            this.BtnFolder = new System.Windows.Forms.Button();
             this.GBParametros.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.NumModulo)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.NumQtd)).BeginInit();
@@ -112,6 +112,7 @@
             this.GBParametros.Controls.Add(this.label1);
             this.GBParametros.Controls.Add(this.TxtBoxFolder);
             this.GBParametros.Controls.Add(this.BtnQuestionModulo);
+            this.GBParametros.Controls.Add(this.BtnGerar);
             this.GBParametros.Controls.Add(this.NumModulo);
             this.GBParametros.Controls.Add(this.lblModulo);
             this.GBParametros.Controls.Add(this.BtnQuestionNumero);
@@ -134,10 +135,39 @@
             this.GBParametros.Controls.Add(this.LblMinimo);
             this.GBParametros.Location = new System.Drawing.Point(12, 44);
             this.GBParametros.Name = "GBParametros";
-            this.GBParametros.Size = new System.Drawing.Size(856, 224);
+            this.GBParametros.Size = new System.Drawing.Size(856, 167);
             this.GBParametros.TabIndex = 3;
             this.GBParametros.TabStop = false;
             this.GBParametros.Text = "Parâmetros";
+            // 
+            // BtnFolder
+            // 
+            this.BtnFolder.Image = global::Simulador.Properties.Resources.folder_icon_32x32;
+            this.BtnFolder.Location = new System.Drawing.Point(366, 102);
+            this.BtnFolder.Name = "BtnFolder";
+            this.BtnFolder.Size = new System.Drawing.Size(40, 40);
+            this.BtnFolder.TabIndex = 26;
+            this.BtnFolder.UseVisualStyleBackColor = true;
+            this.BtnFolder.Click += new System.EventHandler(this.BtnFolder_Click);
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("Arial", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.Location = new System.Drawing.Point(6, 92);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(252, 18);
+            this.label1.TabIndex = 25;
+            this.label1.Text = "Escolha onde o relatório será salvo";
+            // 
+            // TxtBoxFolder
+            // 
+            this.TxtBoxFolder.Enabled = false;
+            this.TxtBoxFolder.Font = new System.Drawing.Font("Arial", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.TxtBoxFolder.Location = new System.Drawing.Point(9, 113);
+            this.TxtBoxFolder.Name = "TxtBoxFolder";
+            this.TxtBoxFolder.Size = new System.Drawing.Size(351, 22);
+            this.TxtBoxFolder.TabIndex = 24;
             // 
             // BtnQuestionModulo
             // 
@@ -455,7 +485,7 @@
             // 
             this.BtnGerar.BackColor = System.Drawing.Color.White;
             this.BtnGerar.Font = new System.Drawing.Font("Arial", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.BtnGerar.Location = new System.Drawing.Point(775, 305);
+            this.BtnGerar.Location = new System.Drawing.Point(757, 131);
             this.BtnGerar.Name = "BtnGerar";
             this.BtnGerar.Size = new System.Drawing.Size(93, 30);
             this.BtnGerar.TabIndex = 14;
@@ -463,46 +493,16 @@
             this.BtnGerar.UseVisualStyleBackColor = false;
             this.BtnGerar.Click += new System.EventHandler(this.BtnGerar_Click);
             // 
-            // TxtBoxFolder
-            // 
-            this.TxtBoxFolder.Enabled = false;
-            this.TxtBoxFolder.Font = new System.Drawing.Font("Arial", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.TxtBoxFolder.Location = new System.Drawing.Point(9, 113);
-            this.TxtBoxFolder.Name = "TxtBoxFolder";
-            this.TxtBoxFolder.Size = new System.Drawing.Size(351, 22);
-            this.TxtBoxFolder.TabIndex = 24;
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Arial", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(6, 92);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(252, 18);
-            this.label1.TabIndex = 25;
-            this.label1.Text = "Escolha onde o relatório será salvo";
-            // 
-            // BtnFolder
-            // 
-            this.BtnFolder.Image = global::Simulador.Properties.Resources.folder_icon_32x32;
-            this.BtnFolder.Location = new System.Drawing.Point(366, 102);
-            this.BtnFolder.Name = "BtnFolder";
-            this.BtnFolder.Size = new System.Drawing.Size(40, 40);
-            this.BtnFolder.TabIndex = 26;
-            this.BtnFolder.UseVisualStyleBackColor = true;
-            this.BtnFolder.Click += new System.EventHandler(this.BtnFolder_Click);
-            // 
             // ScreenSimulador
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.Silver;
-            this.ClientSize = new System.Drawing.Size(884, 461);
+            this.ClientSize = new System.Drawing.Size(884, 225);
             this.Controls.Add(this.GBParametros);
             this.Controls.Add(this.BtnResetar);
             this.Controls.Add(this.LblSelecioneGerador);
             this.Controls.Add(this.CBGerador);
-            this.Controls.Add(this.BtnGerar);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.MaximizeBox = false;
             this.Name = "ScreenSimulador";

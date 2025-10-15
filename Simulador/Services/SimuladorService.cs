@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using Simulador.Models.Enums;
 
 namespace Simulador.Services
 {
@@ -30,11 +31,11 @@ namespace Simulador.Services
             {
                 CreateFile(numbers, config.FolderPath);
 
-                CreateReport(numbers,config.Minimo, config.Maximo, config.FolderPath);
+                CreateReport(numbers, config);
             } 
             catch(Exception e)
             {
-                MessageHelper.ErrorMessageBox("ERRO AO GERAR ARQUIVOS! " + e.Message, "ERRO");
+                throw e;
             }
 
             long memoryAfter = currentProcess.PrivateMemorySize64;
@@ -44,7 +45,8 @@ namespace Simulador.Services
 
         private static void CreateFile(List<long> numeros, string folderPath)
         {
-            string filePath = Path.Combine(folderPath, "NUMEROS_SORTEADOS.txt");
+            string fileName = $"NUMEROS_SORTEADOS_{DateTime.Now:yyyyMMdd_HHmmss}.txt";
+            string filePath = Path.Combine(folderPath, fileName);
 
             try
             {
@@ -60,72 +62,193 @@ namespace Simulador.Services
             }
         }
 
-        private static void CreateReport(List<long> numeros, long min, long max, string folderPath)
+        private static void CreateReport(List<long> numeros, RandomConfig config)
         {
             GlobalFontSettings.FontResolver = new MyFontResolver();
 
             if (numeros == null || numeros.Count == 0)
                 throw new ArgumentException("A lista de números não pode estar vazia.");
 
-            if (!Directory.Exists(folderPath))
-                Directory.CreateDirectory(folderPath);
+            if (!Directory.Exists(config.FolderPath))
+                Directory.CreateDirectory(config.FolderPath);
 
             int numBins = 10;
-            long intervalo = Math.Max(1, (max - min) / numBins);
+            long intervalo = (long)Math.Ceiling((config.Maximo - config.Minimo + 1) / (double)numBins);
 
             var labels = new List<string>();
             var counts = new List<int>();
 
-            for (long start = min; start <= max; start += intervalo)
+            for (int i = 0; i < numBins; i++)
             {
-                long end = Math.Min(start + intervalo - 1, max);
+                long start = config.Minimo + (i * intervalo);
+                long end = Math.Min(start + intervalo - 1, config.Maximo);
+
                 labels.Add($"{start} - {end}");
                 counts.Add(numeros.Count(n => n >= start && n <= end));
 
-                if (end == max) break;
+                if (end >= config.Maximo) break;
             }
-
             var plt = new ScottPlot.Plot();
             double[] valores = counts.Select(v => (double)v).ToArray();
             double[] posicoes = Enumerable.Range(0, valores.Length).Select(i => (double)i).ToArray();
 
-            plt.Add.Bars(valores);
+            var barras = plt.Add.Bars(valores);
+
+            for (int i = 0; i < valores.Length; i++)
+            {
+                var texto = plt.Add.Text(valores[i].ToString(), posicoes[i], valores[i]);
+                texto.LabelFontSize = 12;
+                texto.LabelFontColor = ScottPlot.Colors.Black;
+                texto.LabelAlignment = ScottPlot.Alignment.LowerCenter;
+                texto.OffsetY = -5;
+            }
 
             plt.Axes.Bottom.SetTicks(posicoes, labels.ToArray());
-
             plt.Title("Distribuição de Números");
             plt.YLabel("Quantidade");
             plt.XLabel("Intervalos");
-
             plt.Axes.AutoScale();
-            plt.Axes.Margins(bottom: 0.20);
+            plt.Axes.Margins(top: 0.15);
 
-            string chartPath = Path.Combine(folderPath, "grafico_temp.png");
+            string chartPath = Path.Combine(config.FolderPath, "grafico_temp.png");
             plt.SavePng(chartPath, 800, 400);
 
-            string pdfPath = Path.Combine(folderPath, $"Distribuicao_{DateTime.Now:yyyyMMdd_HHmmss}.pdf");
+            string pdfPath = Path.Combine(config.FolderPath, $"Distribuicao_{DateTime.Now:yyyyMMdd_HHmmss}.pdf");
             using (PdfDocument document = new PdfDocument())
             {
-                document.Info.Title = "Distribuição de Números";
+                document.Info.Title = "RELATÓRIO";
                 PdfPage page = document.AddPage();
                 XGraphics gfx = XGraphics.FromPdfPage(page);
 
                 XFont fontTitulo = new XFont("Arial", 18);
-                gfx.DrawString("Distribuição de Números", fontTitulo, XBrushes.Black,
+                gfx.DrawString("RELATÓRIO", fontTitulo, XBrushes.Black,
                     new XRect(0, 30, page.Width, 50), XStringFormats.TopCenter);
 
                 XImage image = XImage.FromFile(chartPath);
-                double x = (page.Width - image.PixelWidth * 72 / image.HorizontalResolution) / 2;
-                gfx.DrawImage(image, x, 100,
-                    image.PixelWidth * 72 / image.HorizontalResolution,
-                    image.PixelHeight * 72 / image.VerticalResolution);
+                double imageWidth = image.PixelWidth * 72 / image.HorizontalResolution;
+                double imageHeight = image.PixelHeight * 72 / image.VerticalResolution;
+                double x = (page.Width - imageWidth) / 2;
+                double yGrafico = 100;
+                gfx.DrawImage(image, x, yGrafico, imageWidth, imageHeight);
+
+                double yInicial = yGrafico + imageHeight + 30;
+                double margemEsquerda = 60;
+                double margemDireita = page.Width - 60;
+
+                XFont fontSubtitulo = new XFont("Arial", 14, XFontStyleEx.Bold);
+                XFont fontTexto = new XFont("Arial", 11);
+                XFont fontDestaque = new XFont("Arial", 11, XFontStyleEx.Bold);
+
+                XPen caneta = new XPen(XColors.Gray, 1);
+                gfx.DrawLine(caneta, margemEsquerda, yInicial - 10, margemDireita, yInicial - 10);
+
+                gfx.DrawString("Estatísticas", fontSubtitulo, XBrushes.DarkBlue,
+                    new XRect(margemEsquerda, yInicial, margemDireita - margemEsquerda, 20),
+                    XStringFormats.TopLeft);
+
+                yInicial += 25;
+
+                int totalNumeros = numeros.Count;
+                double media = numeros.Average();
+                long mediana = numeros.OrderBy(n => n).ElementAt(totalNumeros / 2);
+
+                string[] informacoes = new string[]
+                {
+                    $"Total de números analisados: {totalNumeros:N0}",
+                    $"Intervalo: {config.Minimo} a {config.Maximo}",
+                    $"Média: {media:N2}",
+                    $"Mediana: {mediana}",
+                    $"Número de intervalos: {counts.Count}",
+                    $"Data de geração: {DateTime.Now:dd/MM/yyyy HH:mm:ss}"
+                };
+
+                double espacamentoLinha = 18;
+                foreach (string info in informacoes)
+                {
+                    gfx.DrawEllipse(XBrushes.DarkBlue, margemEsquerda, yInicial + 4, 4, 4);
+
+                    gfx.DrawString(info, fontTexto, XBrushes.Black,
+                        new XRect(margemEsquerda + 15, yInicial, margemDireita - margemEsquerda - 15, 20),
+                        XStringFormats.TopLeft);
+
+                    yInicial += espacamentoLinha;
+                }
+
+                yInicial += 10;
+
+                gfx.DrawString("Parâmetros", fontSubtitulo, XBrushes.DarkBlue,
+                   new XRect(margemEsquerda, yInicial, margemDireita - margemEsquerda, 20),
+                   XStringFormats.TopLeft);
+
+                yInicial += 25;
+
+                string geradorName = "";
+
+                if (config.Gerador == EGeradores.LINEAR_CONGRUENTIAL_GENERATOR)
+                {
+                    geradorName = "Linear Congruential Generator (LCG)";
+
+                    informacoes = new string[]
+                    {
+                        $"Gerador usado: {geradorName}",
+                        $"Semente inicial: {config.SementeInicial}",
+                        $"Multiplicador: {config.Multiplicador}",
+                        $"Incremento: {config.Incremento}",
+                        $"Módulo: {config.Modulo}",
+                    };
+                }
+                else if (config.Gerador == EGeradores.MERSENNE_TWISTER)
+                {
+                    geradorName = "Mersenne Twister";
+
+                    informacoes = new string[]
+                    {
+                        $"Gerador usado: {geradorName}",
+                        $"Semente inicial: {config.SementeInicial}"
+                    };
+                }
+                else
+                {
+                    geradorName = "Random Number Generator (TRNG)";
+
+                    informacoes = new string[]
+                    {
+                        $"Gerador usado: {geradorName}"
+                    };
+                }
+
+                espacamentoLinha = 18;
+                foreach (string info in informacoes)
+                {
+                    gfx.DrawEllipse(XBrushes.DarkBlue, margemEsquerda, yInicial + 4, 4, 4);
+
+                    gfx.DrawString(info, fontTexto, XBrushes.Black,
+                        new XRect(margemEsquerda + 15, yInicial, margemDireita - margemEsquerda - 15, 20),
+                        XStringFormats.TopLeft);
+
+                    yInicial += espacamentoLinha;
+                }
+
+                yInicial += 15;
+                XBrush fundoDestaque = new XSolidBrush(XColor.FromArgb(240, 240, 255));
+                gfx.DrawRectangle(fundoDestaque, margemEsquerda - 10, yInicial - 5,
+                    margemDireita - margemEsquerda + 20, 50);
+
+                gfx.DrawString("Observações:", fontDestaque, XBrushes.DarkBlue,
+                    new XRect(margemEsquerda, yInicial, margemDireita - margemEsquerda, 20),
+                    XStringFormats.TopLeft);
+
+                yInicial += 20;
+                string observacao = "Este relatório apresenta a distribuição dos números em 10 intervalos equidistantes.";
+                gfx.DrawString(observacao, fontTexto, XBrushes.Black,
+                    new XRect(margemEsquerda, yInicial, margemDireita - margemEsquerda, 40),
+                    XStringFormats.TopLeft);
+
 
                 document.Save(pdfPath);
             }
 
             File.Delete(chartPath);
-
-            Console.WriteLine($"PDF gerado com sucesso em: {pdfPath}");
         }
     }
 }

@@ -200,6 +200,7 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Src\arial.ttf" />
     <None Include="Src\folder_icon.png" />
   </ItemGroup>
   <ItemGroup>

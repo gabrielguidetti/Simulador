@@ -59,7 +59,21 @@ namespace Simulador
             if (!ValidarGeracao(config))
                 return;
 
-            SimuladorService.Simular(config);
+            try
+            {
+                BtnGerar.Enabled = false;
+                SimuladorService.Simular(config);
+                MessageHelper.InfoMessageBox("Relatório gerado com sucesso!", "Sucesso");
+            }
+            catch (Exception ex) 
+            {
+                MessageHelper.ErrorMessageBox("Erro ao gerar relatório! " + ex.Message, "ERRO");
+            }
+            finally
+            {
+                BtnGerar.Enabled = true;
+            }
+            
         }
 
         private bool ValidarGeracao(RandomConfig config)

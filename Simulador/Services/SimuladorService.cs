@@ -164,7 +164,9 @@ namespace Simulador.Services
                     $"Média: {media:N2}",
                     $"Mediana: {mediana}",
                     $"Número de intervalos: {counts.Count}",
-                    $"Data de geração: {DateTime.Now:dd/MM/yyyy HH:mm:ss}"
+                    $"Data de geração: {DateTime.Now:dd/MM/yyyy HH:mm:ss}",
+                    $"Memória usada: {usedBytes} bytes",
+                    $"Tempo de processamento: {tempoExecucao}"
                 };
 
                 double espacamentoLinha = 18;
@@ -199,9 +201,7 @@ namespace Simulador.Services
                         $"Semente inicial: {config.SementeInicial}",
                         $"Multiplicador: {config.Multiplicador}",
                         $"Incremento: {config.Incremento}",
-                        $"Módulo: {config.Modulo}",
-                        $"Memória usada: {usedBytes} bytes",
-                        $"Tempo de processamento: {tempoExecucao}"
+                        $"Módulo: {config.Modulo}"
                     };
                 }
                 else if (config.Gerador == EGeradores.MERSENNE_TWISTER)
@@ -211,9 +211,7 @@ namespace Simulador.Services
                     informacoes = new string[]
                     {
                         $"Gerador usado: {geradorName}",
-                        $"Semente inicial: {config.SementeInicial}",
-                        $"Memória usada: {usedBytes} bytes",
-                        $"Tempo de processamento: {tempoExecucao}"
+                        $"Semente inicial: {config.SementeInicial}"
                     };
                 }
                 else
@@ -222,9 +220,7 @@ namespace Simulador.Services
 
                     informacoes = new string[]
                     {
-                        $"Gerador usado: {geradorName}",
-                        $"Memória usada: {usedBytes} bytes",
-                        $"Tempo de processamento: {tempoExecucao}"
+                        $"Gerador usado: {geradorName}"
                     };
                 }
 

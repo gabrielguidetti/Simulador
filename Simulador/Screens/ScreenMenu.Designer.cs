@@ -30,6 +30,7 @@
         {
             this.BtnTestarGeradores = new System.Windows.Forms.Button();
             this.BtnSimulador = new System.Windows.Forms.Button();
+            this.label1 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // BtnTestarGeradores
@@ -56,12 +57,23 @@
             this.BtnSimulador.UseVisualStyleBackColor = false;
             this.BtnSimulador.Click += new System.EventHandler(this.BtnSimulador_Click);
             // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("Arial", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.Location = new System.Drawing.Point(12, 333);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(293, 19);
+            this.label1.TabIndex = 2;
+            this.label1.Text = "Criado por: Gabriel Guidetti Gonzalez";
+            // 
             // ScreenMenu
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.Silver;
             this.ClientSize = new System.Drawing.Size(384, 361);
+            this.Controls.Add(this.label1);
             this.Controls.Add(this.BtnSimulador);
             this.Controls.Add(this.BtnTestarGeradores);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
@@ -70,6 +82,7 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Menu";
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -77,6 +90,7 @@
 
         private System.Windows.Forms.Button BtnTestarGeradores;
         private System.Windows.Forms.Button BtnSimulador;
+        private System.Windows.Forms.Label label1;
     }
 }
 

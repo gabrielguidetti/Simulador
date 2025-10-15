@@ -1,10 +1,7 @@
 ﻿using PdfSharp.Drawing;
 using PdfSharp.Fonts;
 using PdfSharp.Pdf;
-using PdfSharp.Fonts;
-using PdfSharp.Snippets.Font;
 using Simulador.Models;
-using Simulador.Util;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -23,15 +20,25 @@ namespace Simulador.Services
             config.MaxBytes = currentProcess.PrivateMemorySize64;
             long memoryBefore = currentProcess.PrivateMemorySize64;
 
-            Console.WriteLine("MEMÓRIA ANTES: " + currentProcess.PrivateMemorySize64);
+            var stopwatch = Stopwatch.StartNew();
 
             var numbers = RandomNumberService.Random(config);
+
+            stopwatch.Stop();
+
+            string tempoExecucao;
+            if (stopwatch.Elapsed.TotalSeconds < 1)
+                tempoExecucao = $"{stopwatch.ElapsedMilliseconds} ms";
+            else if (stopwatch.Elapsed.TotalMinutes < 1)
+                tempoExecucao = $"{stopwatch.Elapsed.TotalSeconds:F2} segundos";
+            else
+                tempoExecucao = $"{stopwatch.Elapsed.Minutes}m {stopwatch.Elapsed.Seconds}s";
 
             try
             {
                 CreateFile(numbers, config.FolderPath);
 
-                CreateReport(numbers, config);
+                CreateReport(numbers, config, (config.MaxBytes - memoryBefore), tempoExecucao);
             } 
             catch(Exception e)
             {
@@ -39,8 +46,6 @@ namespace Simulador.Services
             }
 
             long memoryAfter = currentProcess.PrivateMemorySize64;
-
-            Console.WriteLine($"Memória usada: {config.MaxBytes - memoryBefore} bytes");
         }
 
         private static void CreateFile(List<long> numeros, string folderPath)
@@ -62,7 +67,7 @@ namespace Simulador.Services
             }
         }
 
-        private static void CreateReport(List<long> numeros, RandomConfig config)
+        private static void CreateReport(List<long> numeros, RandomConfig config, long usedBytes, string tempoExecucao)
         {
             GlobalFontSettings.FontResolver = new MyFontResolver();
 
@@ -195,6 +200,8 @@ namespace Simulador.Services
                         $"Multiplicador: {config.Multiplicador}",
                         $"Incremento: {config.Incremento}",
                         $"Módulo: {config.Modulo}",
+                        $"Memória usada: {usedBytes} bytes",
+                        $"Tempo de processamento: {tempoExecucao}"
                     };
                 }
                 else if (config.Gerador == EGeradores.MERSENNE_TWISTER)
@@ -204,7 +211,9 @@ namespace Simulador.Services
                     informacoes = new string[]
                     {
                         $"Gerador usado: {geradorName}",
-                        $"Semente inicial: {config.SementeInicial}"
+                        $"Semente inicial: {config.SementeInicial}",
+                        $"Memória usada: {usedBytes} bytes",
+                        $"Tempo de processamento: {tempoExecucao}"
                     };
                 }
                 else
@@ -213,7 +222,9 @@ namespace Simulador.Services
 
                     informacoes = new string[]
                     {
-                        $"Gerador usado: {geradorName}"
+                        $"Gerador usado: {geradorName}",
+                        $"Memória usada: {usedBytes} bytes",
+                        $"Tempo de processamento: {tempoExecucao}"
                     };
                 }
 
@@ -243,7 +254,6 @@ namespace Simulador.Services
                 gfx.DrawString(observacao, fontTexto, XBrushes.Black,
                     new XRect(margemEsquerda, yInicial, margemDireita - margemEsquerda, 40),
                     XStringFormats.TopLeft);
-
 
                 document.Save(pdfPath);
             }
